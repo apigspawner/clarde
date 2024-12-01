@@ -358,7 +358,7 @@ def signal_handler(sig, frame):
 def main():
     try:
         signal.signal(signal.SIGINT, signal_handler)
-        api_key = 'CLAUDE-API-KEY'  # Get API key from environment variable
+        api_key = 'ANTHROPIC_API_KEY'  # Get API key from environment variable
         if not api_key:
             print(colors.Red_text("Error: ANTHROPIC_API_KEY environment variable not set"))
             return
