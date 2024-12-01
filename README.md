@@ -56,4 +56,4 @@ The script uses the `ANTHROPIC_API_KEY` environment variable to authenticate wit
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the BSD 3-Clause License.
