@@ -1,7 +1,7 @@
 
 # Clarde
 
-Clarde is a powerful command-line interface (CLI) application that allows you to seamlessly interact with the state-of-the-art Anthropic Claude language model. This chatbot offers a wide range of features to enhance your conversational experience, including the ability to save and load conversation history, import external files, and conveniently access your recent discussions.
+Clarde is a powerful command-line interface (CLI) application that allows you to seamlessly interact with the state-of-the-art Anthropic Claude language model. Clarde offers a wide range of features to enhance your conversational experience, including the ability to save and load conversation history, import external files, and conveniently access your recent discussions.
 
 ## Table of Contents
 
@@ -35,13 +35,13 @@ Clarde is a powerful command-line interface (CLI) application that allows you to
 To run Clarde, execute the following command in your terminal:
 
 
-`python clarde.py`
+`python Clarde.py`
 
 
 If the above command doesn't work, try:
 
 
-`python3 clarde.py`
+`python3 Clarde.py`
 
 
 ### Starting a New Chat
@@ -54,7 +54,7 @@ If you have saved conversations from previous sessions, you can select "2" to vi
 
 ### Available Commands
 
-Clarde Chatbot supports a variety of commands to enhance your interaction experience. The following commands are available within the chatbot:
+Clarde supports a variety of commands to enhance your interaction experience. The following commands are available within Clarde:
 
 - `/clear`: Clear the conversation history and screen.
 - `/save`: Save the current conversation to a file.
@@ -71,23 +71,23 @@ Clarde has an exciting roadmap of future enhancements and features. Some of the 
 
 1. spitting up all conversation functions (will not effect comunication):
    - Split up all comunication funtions like saving conversation, loading conversations, etc.
-   - make clarde easier to read so people can easly read and modify the code.
+   - make Clarde easier to read so people can easly read and modify the code.
 
 2. Multimodal Interactions:
    - Integrate support for image input to enable richer, more engaging interactions.
-   - Leverage Anthropic's multimodal capabilities to allow users to share and discuss visual content within the chatbot.
+   - Leverage Anthropic's multimodal capabilities to allow users to share and discuss visual content within Clarde.
 
 3. Conversation Management:
    - Add the ability to delete or archive conversations, allowing users to better organize and manage their chat history.
 
 4. Onboarding and Ice Breakers:
-   - Implement friendly ice breaker features to help new users feel more comfortable and engage with the chatbot during their initial interactions.
+   - Implement friendly ice breaker features to help new users feel more comfortable and engage with Clarde during their initial interactions.
   
 These are just a few examples of the exciting features and improvements planned for Clarde. Stay tuned for future updates and releases as the development team (only me, for now at least) continues to enhance the application and deliver an even more powerful and versatile conversational experience.
 
 ## Advanced Features
 
-Clarde Chatbot offers several advanced features to streamline your usage and personalize your experience.
+Clarde offers several advanced features to streamline your usage and personalize your experience.
 
 ### File Imports
 
@@ -95,11 +95,11 @@ The `/import` command allows you to seamlessly incorporate external files, such 
 
 ### Conversation History Management
 
-Clarde Chatbot provides robust conversation history management capabilities. You can save your ongoing discussions to files using the `/save` command, and later reload them using the `/load` command. This feature ensures that you can pick up where you left off and maintain the context of your conversations.
+Clarde provides robust conversation history management capabilities. You can save your ongoing discussions to files using the `/save` command, and later reload them using the `/load` command. This feature ensures that you can pick up where you left off and maintain the context of your conversations.
 
 ### Personalization
 
-Clarde Chatbot can be further customized to suit your preferences. You can modify the application's behavior, appearance, and response styles by adjusting the configuration settings or by contributing to the project's ongoing development.
+Clarde can be further customized to suit your preferences. You can modify the application's behavior, appearance, and response styles by adjusting the configuration settings or by contributing to the project's ongoing development.
 
 ## Configuration
 
@@ -107,7 +107,7 @@ The script uses the `ANTHROPIC_API_KEY` environment variable to authenticate wit
 
 ## Contributing
 
-We welcome contributions from the community to enhance the Clarde Chatbot project. If you have any ideas, bug fixes, or feature enhancements, please feel free to submit a pull request or open an issue on the project's GitHub repository.
+We welcome contributions from the community to enhance Clarde. If you have any ideas, bug fixes, or feature enhancements, please feel free to submit a pull request or open an issue on the project's GitHub repository.
 
 ## License
 
