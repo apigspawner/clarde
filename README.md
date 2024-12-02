@@ -10,6 +10,7 @@ Clarde Chatbot is a powerful command-line interface (CLI) application that allow
   - [Starting a New Chat](#starting-a-new-chat)
   - [Continuing a Recent Chat](#continuing-a-recent-chat)
   - [Available Commands](#available-commands)
+- [Future Plans](#future-plans)
 - [Advanced Features](#advanced-features)
   - [File Imports](#file-imports)
   - [Conversation History Management](#conversation-history-management)
@@ -63,6 +64,26 @@ Clarde Chatbot supports a variety of commands to enhance your interaction experi
 - `/recent`: Show and select from recent conversations.
 - `/help`: Display the help message.
 - `quit`: Exit the chat.
+
+## Future Plans
+
+The Clarde Chatbot project has an exciting roadmap of future enhancements and features. Some of the planned improvements include:
+
+1. spitting up all conversation funtions (will not effect comunication):
+   - Spit up all comunication funtions like saving conversation, loading conversations, etc.
+   - make clarde easier to read so people can easly read and modify the code.
+
+2. Multimodal Interactions:
+   - Integrate support for image input to enable richer, more engaging interactions.
+   - Leverage Anthropic's multimodal capabilities to allow users to share and discuss visual content within the chatbot.
+
+3. Conversation Management:
+   - Add the ability to delete or archive conversations, allowing users to better organize and manage their chat history.
+
+4. Onboarding and Ice Breakers:
+   - Implement friendly ice breaker features to help new users feel more comfortable and engage with the chatbot during their initial interactions.
+  
+These are just a few examples of the exciting features and improvements planned for Clarde. Stay tuned for future updates and releases as the development team (only me, for now at least) continues to enhance the application and deliver an even more powerful and versatile conversational experience.
 
 ## Advanced Features
 
