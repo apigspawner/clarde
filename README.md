@@ -1,7 +1,7 @@
 
-# Clarde Chatbot
+# Clarde
 
-Clarde Chatbot is a powerful command-line interface (CLI) application that allows you to seamlessly interact with the state-of-the-art Anthropic Claude language model. This chatbot offers a wide range of features to enhance your conversational experience, including the ability to save and load conversation history, import external files, and conveniently access your recent discussions.
+Clarde is a powerful command-line interface (CLI) application that allows you to seamlessly interact with the state-of-the-art Anthropic Claude language model. This chatbot offers a wide range of features to enhance your conversational experience, including the ability to save and load conversation history, import external files, and conveniently access your recent discussions.
 
 ## Table of Contents
 
