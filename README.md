@@ -19,7 +19,7 @@ Claude Chatbot is a command-line interface (CLI) application that allows you to 
    
    pip install colorama antrhopic
    
-3. Obtain an Anthropic API key and set it as an environment variable named `ANTHROPIC_API_KEY`. (you can find the link to get you key [here] (#https://console.anthropic.com/settings/keys))
+3. Obtain an Anthropic API key and set it as an environment variable named `ANTHROPIC_API_KEY`. (you can find the link to get you key [here](https://console.anthropic.com/settings/keys))
 
 ## Usage
 
