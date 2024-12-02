@@ -17,9 +17,9 @@ Claude Chatbot is a command-line interface (CLI) application that allows you to 
 1. Make sure you have Python 3.x installed on your system.
 2. Install the required dependencies by running the following command in your terminal:
    
-   pip install -r requirements.txt
+   pip install colorama antrhopic
    
-3. Obtain an Anthropic API key and set it as an environment variable named `ANTHROPIC_API_KEY`.
+3. Obtain an Anthropic API key and set it as an environment variable named `ANTHROPIC_API_KEY`. (you can find the link to get you key [here] (#https://console.anthropic.com/settings/keys))
 
 ## Usage
 
