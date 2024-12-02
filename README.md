@@ -25,7 +25,7 @@ Clarde is a powerful command-line interface (CLI) application that allows you to
 2. Install the required dependencies by running the following command in your terminal:
    
    
-   pip install colorama anthropic
+   ``pip install colorama anthropic``
    
    
 3. Obtain an Anthropic API key and set it as an environment variable named `ANTHROPIC_API_KEY`. You can find the link to get your key [here](https://console.anthropic.com/settings/keys).
@@ -35,13 +35,13 @@ Clarde is a powerful command-line interface (CLI) application that allows you to
 To run Clarde, execute the following command in your terminal:
 
 
-python clarde.py
+`python clarde.py`
 
 
 If the above command doesn't work, try:
 
 
-python3 clarde.py
+`python3 clarde.py`
 
 
 ### Starting a New Chat
@@ -67,10 +67,10 @@ Clarde Chatbot supports a variety of commands to enhance your interaction experi
 
 ## Future Plans
 
-The Clarde Chatbot project has an exciting roadmap of future enhancements and features. Some of the planned improvements include:
+Clarde has an exciting roadmap of future enhancements and features. Some of the planned improvements include:
 
-1. spitting up all conversation funtions (will not effect comunication):
-   - Spit up all comunication funtions like saving conversation, loading conversations, etc.
+1. spitting up all conversation functions (will not effect comunication):
+   - Split up all comunication funtions like saving conversation, loading conversations, etc.
    - make clarde easier to read so people can easly read and modify the code.
 
 2. Multimodal Interactions:
