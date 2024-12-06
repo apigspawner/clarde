@@ -9,6 +9,7 @@ import glob
 from operator import itemgetter
 from typing import List, Dict
 import re
+import base64
 
 
 class ClaudeChatbot:
@@ -17,6 +18,32 @@ class ClaudeChatbot:
         self.conversation_history = []
         self.total_tokens_used = 0
 
+    
+    def choose_model(self):
+        print(colors.blue_text("\nChoose a model:"))
+        print(f"[1] Claude (Haiku)")
+        print(f"[2] Claude (Sonnet)")
+        
+        while True:
+            try:
+                choice = input(colors.blue_text("Enter the number of the model you want to use: "))
+                if choice == "1":
+                    self.current_model = "claude-3-haiku-20240307"
+                    print()
+                    print(colors.blue_text("Using 'Claude Haiku' model."))
+                    print()
+                    break
+                elif choice == "2":
+                    self.current_model = "claude-3-5-sonnet-20241022"
+                    print()
+                    print(colors.blue_text("Using 'Claude Sonnet' model."))
+                    print()
+                    break
+                else:
+                    print(colors.Red_text("Invalid choice. Please try again."))
+            except ValueError:
+                print(colors.Red_text("Please enter a valid number."))
+
     def list_recent_conversations(self) -> List[Dict]:
         """Lists recent conversation files and returns them sorted by modification time."""
         conversations = []
@@ -24,15 +51,28 @@ class ClaudeChatbot:
         # Find all conversation JSON files
         for file in glob.glob("conversation_*.json"):
             try:
-                # Get file stats
                 stats = os.stat(file)
-                # Get the first line of conversation to use as preview
                 with open(file, 'r', encoding='utf-8') as f:
                     data = json.load(f)
-                    preview = data[0]["content"] if data else "Empty conversation"
-                    preview = preview[:60] + "..." if len(preview) > 60 else preview
                 
-                conversations.append({
+                    # Get the content from the first message
+                    if data and "content" in data[0]:
+                        message_content = data[0]["content"]
+
+                        # Handle if it's a list (image + text)
+                        if isinstance(message_content, list):
+                            # Look for the text part in the content list
+                            preview = next((item["text"] for item in message_content if item["type"] == "text"), "Image message")
+                        else:
+                            # If it's just regular text
+                            preview = message_content
+                    else:
+                        preview = "Empty conversation"
+
+                    # Truncate the preview
+                    preview = preview[:60] + "..." if len(preview) > 60 else preview
+            
+                    conversations.append({
                     'filename': file,
                     'modified': stats.st_mtime,
                     'size': stats.st_size,
@@ -41,8 +81,7 @@ class ClaudeChatbot:
             except Exception as e:
                 print(colors.Red_text(f"Error reading {file}: {str(e)}"))
                 continue
-        
-        # Sort by modification time, most recent first
+    
         return sorted(conversations, key=itemgetter('modified'), reverse=True)
 
     def display_recent_conversations(self):
@@ -68,13 +107,18 @@ class ClaudeChatbot:
                 choice = input(colors.blue_text("Choice: ")).strip()
                 
                 if not choice:  # User pressed Enter without a choice
+                    print()
+                    print(colors.Red_text("choice canneled"))
+                    self.choose_model()
                     return
+                    
                 
                 choice_num = int(choice)
                 if 1 <= choice_num <= len(conversations):
                     selected_file = conversations[choice_num-1]['filename']
                     filename = selected_file                        
                     self.load_conversation(filename)
+                    self.choose_model()
                     self.display_history()
                     break
                 else:
@@ -101,32 +145,39 @@ class ClaudeChatbot:
             self.handle_commands(user_input)
             return
 
-        self.conversation_history.append({
-            "role": "user",
-            "content": user_input
-        })
-
         try:
+            # If we have an attached image, include it in the message
+            content = []
+            if hasattr(self, 'current_image'):
+                content.append(self.current_image)
+            content.append({"type": "text", "text": user_input})
+
+            message = {
+                "role": "user",
+                "content": content if hasattr(self, 'current_image') else user_input
+            }
+
+            self.conversation_history.append(message)
+
             stream = self.anthropic.messages.create(
                 max_tokens=1200,
-                model="claude-3-haiku-20240307",
-                 system="Write with an authentic, unfiltered tone that captures genuine human frustration. Use direct, conversational language that reflects real emotional experiences. Incorporate natural speech patterns, including occasional strategic profanity that feels organic and contextually appropriate. Craft sentences that sound like genuine, spontaneous thoughts - sharp, concise, and emotionally textured. Communicate with a sense of raw honesty that feels like a real person venting, balancing sardonic wit with authentic emotional expression. Ensure the tone sounds like a real person speaking candidly, with natural fluctuations in irritation and emotional intensity. Profanity and expressive language should feel like a natural part of conversation. Maintain a sense of genuine, unvarnished human reaction that feels true to lived experience. have suggestive language in a humorous way.",
+                model=str(self.current_model),
                 messages=self.conversation_history,
                 stream=True
             )
 
             response_content = ""
             print(f"{colors.yellow_text('Claude:')} ", end="", flush=True)
-            
+
             in_code_block = False
             in_bold = False
             current_text = ""
-            
+
             for message in stream:
                 if message.type == "content_block_delta":
                     chunk = message.delta.text
                     response_content += chunk
-                    
+
                     i = 0
                     while i < len(chunk):
                         # Check for code block markers
@@ -143,7 +194,7 @@ class ClaudeChatbot:
                             in_code_block = not in_code_block
                             i += 3
                             continue
-                        
+                            
                         # Check for bold markers
                         if chunk[i:i+2] == "**":
                             # Print accumulated text with current formatting
@@ -159,10 +210,10 @@ class ClaudeChatbot:
                                 in_bold = not in_bold
                             i += 2
                             continue
-                        
+                            
                         current_text += chunk[i]
                         i += 1
-                    
+
                     # Print any remaining text if it doesn't end with a marker
                     if current_text and not (chunk.endswith("```") or chunk.endswith("**")):
                         if in_code_block:
@@ -172,7 +223,7 @@ class ClaudeChatbot:
                         else:
                             print(colors.green_text(current_text), end="", flush=True)
                         current_text = ""
-            
+
             # Print any final remaining text
             if current_text:
                 if in_code_block:
@@ -181,9 +232,9 @@ class ClaudeChatbot:
                     print(colors.bold_text(current_text), end="", flush=True)
                 else:
                     print(colors.green_text(current_text), end="", flush=True)
-            
+
             print()  # New line after response
-            
+
             self.conversation_history.append({
                 "role": "assistant",
                 "content": response_content
@@ -243,8 +294,11 @@ class ClaudeChatbot:
             self.import_file(filename)
         elif cmd == "/history":
             self.display_history()
-        elif cmd == "/recent":  # Add this new command
+        elif cmd == "/recent":  
             self.display_recent_conversations()
+        elif cmd.startswith("/attach "):
+            filename = command[8:].strip()
+            self.images(filename)
         else:
             print(colors.Red_text("Unknown command. Type /help for available commands."))
 
@@ -315,6 +369,89 @@ class ClaudeChatbot:
                 json.dump(self.conversation_history, f, indent=2)
             print(colors.blue_text(f"\nConversation saved to {filename}"))
 
+    def images(self, image_path, prompt=None):
+        try:
+            if not os.path.exists(image_path):
+                print(colors.Red_text(f"Error: Image file '{image_path}' not found"))
+                return
+
+            # Get file extension and set proper media type
+            ext = image_path.lower().split('.')[-1]
+            media_types = {
+                'jpg': 'image/jpeg',
+                'jpeg': 'image/jpeg',
+                'png': 'image/png',
+                'gif': 'image/gif',
+                'webp': 'image/webp'
+            }
+            media_type = media_types.get(ext)
+
+            if not media_type:
+                print(colors.Red_text(f"Unsupported image format: {ext}"))
+                return
+
+            # Store image data for reuse
+            with open(image_path, 'rb') as img_file:
+                self.current_image = {
+                    "type": "image",
+                    "source": {
+                        "type": "base64",
+                        "media_type": media_type,
+                        "data": base64.b64encode(img_file.read()).decode('utf-8')
+                    }
+                }
+                self.current_image_path = image_path
+
+            # If no prompt provided, just confirm attachment
+            if not prompt:
+                print(colors.blue_text(f"\nImage '{image_path}' attached. You can now ask questions about it."))
+                return
+
+            # Create message with image and prompt
+            messages = [{
+                "role": "user",
+                "content": [
+                    self.current_image,
+                    {
+                        "type": "text",
+                        "text": prompt
+                    }
+                ]
+            }]
+
+            # Stream the response
+            stream = self.anthropic.messages.create(
+                model=self.current_model,
+                max_tokens=1024,
+                messages=messages,
+                stream=True
+            )
+
+            print(f"{colors.yellow_text('Claude:')} ", end="", flush=True)
+            response_content = ""
+
+            for chunk in stream:
+                if chunk.type == "content_block_delta":
+                    text = chunk.delta.text
+                    response_content += text
+                    print(colors.green_text(text), end="", flush=True)
+
+            print()
+
+            # Add to conversation history
+            self.conversation_history.extend([
+                {
+                    "role": "user",
+                    "content": f"[Image attached: {image_path}] {prompt if prompt else ''}"
+                },
+                {
+                    "role": "assistant",
+                    "content": response_content
+                }
+            ])
+
+        except Exception as e:
+            print(colors.Red_text(f"Error processing image: {str(e)}"))
 
     def show_help(self):
         help_text = """
@@ -358,7 +495,7 @@ def signal_handler(sig, frame):
 def main():
     try:
         signal.signal(signal.SIGINT, signal_handler)
-        api_key = 'ANTHROPIC_API_KEY'  # Get API key from environment variable
+        api_key = 'ANTHROPIC_API_KEY'
         if not api_key:
             print(colors.Red_text("Error: ANTHROPIC_API_KEY environment variable not set"))
             return
@@ -367,11 +504,9 @@ def main():
         
         chatbot.clear_screen()
         colors.display_boot_logo(1)
-        print(colors.blue_text("Welcome to Claude! Use /help for a list of commands."))
+        print(colors.blue_text("Welcome to Clarde! Use /help for a list of commands."))
         print("")
         
-        # Display recent conversations on startup
-        #chatbot.display_recent_conversations()
         print("Select an option:")
         print("[1] Start new chat")
         print("[2] Continue recent chat")
@@ -383,6 +518,7 @@ def main():
                 
                 option_number = int(option)
                 if option_number == 1:
+                    chatbot.choose_model()
                     break
                 elif option_number == 2:
                     chatbot.display_recent_conversations()
@@ -399,8 +535,17 @@ def main():
             try:
                 user_input = input(f"You: ")
                 if user_input.lower() in ['quit', 'exit' 'quit chat', 'quit ' 'exit ']:
-                    chatbot.save_conversation(auto_save=True)  # Auto-save on exit with generated title
-                    break
+                    print(colors.blue_text("would you like to save this conversation [y/n]?"))
+                    while True:
+                        user_input = input(f"you: ")
+                        if user_input.lower() == "y":
+                            chatbot.save_conversation(auto_save=True)
+                            exit(0)
+                        elif user_input.lower() == "n":
+                            exit(0)
+                        if not user_input.strip():
+                            print(colors.Red_text("Error: Please enter a message"))
+                    
                 if not user_input.strip():
                     print(colors.Red_text("Error: Please enter a message"))
                     continue
