@@ -9,6 +9,7 @@ Clarde is a powerful command-line interface (CLI) application that allows you to
 - [Usage](#usage)
   - [Starting a New Chat](#starting-a-new-chat)
   - [Continuing a Recent Chat](#continuing-a-recent-chat)
+  - [Image Analysis](#image-analysis)
   - [Available Commands](#available-commands)
 - [Future Plans](#future-plans)
 - [Advanced Features](#advanced-features)
@@ -52,18 +53,32 @@ When you run the script, you'll be prompted to choose an option. Select "1" to s
 
 If you have saved conversations from previous sessions, you can select "2" to view and load a recent chat, allowing you to pick up where you left off.
 
+### Image Analysis
+
+You can now analyze images using Claude's vision capabilities:
+
+1. Attach an image:
+   `/attach path/to/your/image.jpg`
+
+2. Ask questions about the attached image:
+   "What can you see in this image?"
+   "Can you describe the main elements?"
+
+Supported image formats: JPG, JPEG, PNG, GIF, WEBP
+
 ### Available Commands
 
-Clarde supports a variety of commands to enhance your interaction experience. The following commands are available within Clarde:
+The following commands are available within the chatbot:
 
-- `/clear`: Clear the conversation history and screen.
-- `/save`: Save the current conversation to a file.
-- `/load`: Load a conversation from a file.
-- `/import`: Import a file (Python, JSON, etc.) into the conversation.
-- `/history`: Display the conversation history.
-- `/recent`: Show and select from recent conversations.
-- `/help`: Display the help message.
-- `quit`: Exit the chat.
+- `/clear`: Clear the conversation history and screen
+- `/save`: Save the current conversation to a file
+- `/load`: Load a conversation from a file
+- `/import`: Import a file (Python, JSON, etc.) into the conversation
+- `/history`: Display the conversation history
+- `/recent`: Show and select from recent conversations
+- `/attach`: Attach an image for analysis
+- `/help`: Display the help message
+- `quit`: Exit the chat
 
 ## Future Plans
 
@@ -72,15 +87,11 @@ Clarde has an exciting roadmap of future enhancements and features. Some of the 
 1. spitting up all conversation functions (will not effect comunication):
    - Split up all comunication funtions like saving conversation, loading conversations, etc.
    - make Clarde easier to read so people can easly read and modify the code.
-
-2. Multimodal Interactions:
-   - Integrate support for image input to enable richer, more engaging interactions.
-   - Leverage Anthropic's multimodal capabilities to allow users to share and discuss visual content within Clarde.
-
-3. Conversation Management:
+  
+2. Conversation Management:
    - Add the ability to delete or archive conversations, allowing users to better organize and manage their chat history.
 
-4. Onboarding and Ice Breakers:
+3. Onboarding and Ice Breakers:
    - Implement friendly ice breaker features to help new users feel more comfortable and engage with Clarde during their initial interactions.
   
 These are just a few examples of the exciting features and improvements planned for Clarde. Stay tuned for future updates and releases as the development team (only me, for now at least) continues to enhance the application and deliver an even more powerful and versatile conversational experience.
